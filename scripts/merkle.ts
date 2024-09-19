@@ -4,7 +4,7 @@ import csv from "csv-parser";
 import { MerkleTree } from "merkletreejs";
 import keccak256 from "keccak256";
 
-const CSV_FILE_PATH = "airdrop/airdropAddresses.csv";
+const CSV_FILE_PATH = "addresses/addresses.csv";
 
 const leafNodes: Buffer[] = [];
 
@@ -25,12 +25,10 @@ fs.createReadStream(CSV_FILE_PATH)
 			return;
 		}
 
-		const amount = ethers.parseUnits(row.amount.toString(), 6); // Convert to Wei
+		// const amount = ethers.parseUnits(row.amount.toString(), 6); // Convert to Wei
 
 		// Hashing to create a leaf node (bytes32)
-		const leaf = keccak256(
-			ethers.solidityPacked(["address", "uint256"], [address, amount])
-		);
+		const leaf = keccak256(`${address},${row.amount}`);
 
 		leafNodes.push(leaf);
 	})
@@ -49,12 +47,10 @@ fs.createReadStream(CSV_FILE_PATH)
 
 		// Extracting proof for this address
 		const address = "0x4AF79fFCaBb09083aF6CcC3b2C20Fe989519f6d7";
-		const amount = ethers.parseUnits("500.5", 6); // Example amount
+		const amount = 50; // Example amount
 
 		// Create leaf for proof
-		const leaf = keccak256(
-			ethers.solidityPacked(["address", "uint256"], [address, amount])
-		);
+		const leaf = keccak256(`${address},${amount}`);
 
 		console.log("Leaf:", leaf.toString("hex"));
 

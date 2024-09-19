@@ -2,24 +2,25 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.20;
 
-import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+//import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/utils/cryptography/MerkleProof.sol";
 
 contract MerkleAirdrop {
     IERC20 public token;       // ERC20 token used for airdrop
-    address public owner;      // Contract owner
+    address public owner; 
+    address public boardApe;     // Contract owner
     bytes32 public merkleRoot; // Merkle root
 
     mapping(address => bool) public verifiedClaimers; // Track claimers to prevent double claims
 
     event ClaimDetails(uint256 amount, address indexed claimer); // Emitted on successful claim
 
-    constructor(bytes32 _merkleRoot, IERC20 _token)  {
+    constructor(bytes32 _merkleRoot, IERC20 _token, address _boardApe)  {
         owner = msg.sender; // Set the contract deployer as the owner
         merkleRoot = _merkleRoot; // Set the initial Merkle root
         token = _token; // Set the ERC20 token address
-
+        boardApe= _boardApe;
          // Mint 10,000 tokens to the contract
     }
 
